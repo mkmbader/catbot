@@ -1,3 +1,12 @@
-ragas
+# basics
 notebook
 ipython 
+
+# project 
+ragas
+wikipedia
+langchain
+chromadb
+
+# formatting
+black
