@@ -5,7 +5,7 @@ Find the slides to the presentation 👉 here.
 
 Connect to the developer 👉 [here](https://www.linkedin.com/in/mkmbader/).
 
-Check out Ragas, developped by 👉 ExplodingGradients [here](https://docs.ragas.io/en/v0.1.21/index.html)
+Check out Ragas, developped by ExplodingGradients 👉 [here](https://docs.ragas.io/en/v0.1.21/index.html)
 
 
 ### Overview
