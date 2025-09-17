@@ -9,6 +9,7 @@ Check out Ragas, developped by 👉 ExplodingGradients [here](https://docs.ragas
 
 
 ### Overview
+___
 This `main.py` notebook contains the following workflow:
 
 - **Database Creation**: Initializes a database using ChromaDB to efficiently store and retrieve data.
