@@ -1,8 +1,9 @@
 # CatBot
-Meet CatBot - the c(h)atbot who know's all about Cats, based on [simple wikipedia](https://simple.wikipedia.org/wiki/Cat). Catbot's gives a quick start guide to RAG evaluation and was developped to fuel a presentation at PyData Amsterdam 2025. 
+Meet CatBot - the c(h)atbot who know's all about Cats, based on [simple wikipedia](https://simple.wikipedia.org/wiki/Cat). Catbot's gives a quick start guide to RAG evaluation using Ragas and was developped to fuel a presentation at PyData Amsterdam 2025. 
 
 Find the slides to the presentation 👉 here.
 Connect to the developer 👉 [here](https://www.linkedin.com/in/mkmbader/).
+Check out Ragas, developped by 👉 ExplodingGradients [here](https://docs.ragas.io/en/v0.1.21/index.html)
 
 
 ### Overview
