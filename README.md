@@ -18,6 +18,7 @@ This `main.py` notebook contains the following workflow:
 - **Automated Evaluation**: Assesses the QA system’s responses using Ragas-provided evaluation metrics such as Faithfulness, Answer Correctness, Answer Relevancy
 
 ### Setup
+___
 Environment
 * create virtual environment: `python -m venv .catbot`
 * activate environment: `source .catbot/bin/activate`
