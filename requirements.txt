@@ -3,12 +3,13 @@ notebook
 ipython 
 
 # project 
-ragas
-wikipedia
-langchain
 chromadb
-openai
 dotenv
+langchain
+openai
+ragas
+rapidfuzz
+wikipedia
 
 # formatting
 black
