@@ -1,26 +1,13 @@
 from fastapi import FastAPI, Depends, HTTPException, status
 from contextlib import asynccontextmanager
-from pydantic import BaseModel
 from typing import List, AsyncGenerator
 from catbot.database.embedding import embedding_function
 from catbot.rag.basic_rag import BasicRAG
 from catbot.database.downloader import download_and_chunk_wikipedia_articles
 from catbot.database.embedding import create_data_base
 from chromadb import PersistentClient
+from fastapi.schemas import ChatRequest, ChatResponse
 
-
-class ChatRequest(BaseModel):
-    """
-    Model for the incoming chat query.
-    """
-    query: str
-
-class ChatResponse(BaseModel):
-    """
-    Model for the outgoing chat response.
-    """
-    answer: str
-    sources: List[str] = []
 
 
 @asynccontextmanager
@@ -48,15 +35,15 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     )
 
     
-    app.state.rag_chatbot = rag
+    app.state.rag = rag
     print("RAG Chatbot instance created and stored in app.state.")
 
     yield 
 
     print("FastAPI application shutting down (lifespan manager)...")
 
-    if app.state.rag_chatbot:
-        await app.state.rag_chatbot.close()
+    if app.state.rag:
+        await app.state.rag.close()
     print("RAG Chatbot instance cleaned up.")
     print("FastAPI application shut down gracefully.")
 
@@ -80,15 +67,15 @@ async def get_rag_chatbot() -> BasicRAG:
     # FastAPI's Depends system handles this for you.
     # In a real setup, `Request` object can be used to access `app.state`
     # from fastapi import Request
-    # return request.app.state.rag_chatbot
+    # return request.app.state.rag
 
     # For simplicity, if `app` is globally defined and accessible:
-    if not hasattr(app.state, "rag_chatbot") or app.state.rag_chatbot is None:
+    if not hasattr(app.state, "rag") or app.state.rag is None:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="RAG Chatbot is not initialized yet. Please try again in a moment."
         )
-    return app.state.rag_chatbot
+    return app.state.rag
 
 
 @app.post("/chat", response_model=ChatResponse)
@@ -116,11 +103,11 @@ async def health_check():
     """
     Basic health check endpoint to verify the API is running and the chatbot is initialized.
     """
-    chatbot_instance = getattr(app.state, "rag_chatbot", None)
+    chatbot_instance = getattr(app.state, "rag", None)
     return {
         "status": "healthy",
         "chatbot_initialized": chatbot_instance is not None,
-        "llm_model": chatbot_instance.llm_model if chatbot_instance else "N/A"
+        # "llm_model": chatbot_instance.llm_model if chatbot_instance else "N/A"
     }
 
 @app.get("/")

@@ -31,3 +31,4 @@ Create database
 ____
 The API is built using FastAPI, therefore
 * to locally start: `uvicorn app:app --reload`
+* interact locally via swagger: `http://127.0.0.1:8000/docs`
