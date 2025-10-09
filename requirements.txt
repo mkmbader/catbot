@@ -11,5 +11,10 @@ ragas
 rapidfuzz
 wikipedia
 
+# fastapi
+fastapi
+pydantic
+uvicorn
+
 # formatting
 black

@@ -17,12 +17,17 @@ This `main.py` notebook contains the following workflow:
 - **Synthetic Dataset Generation**: Utilizes Ragas with a custom prompt to generate a synthetic dataset tailored for QA tasks.
 - **Automated Evaluation**: Assesses the QA system’s responses using Ragas-provided evaluation metrics such as Faithfulness, Answer Correctness, Answer Relevancy
 
-### Setup
+
+### Environment
 ___
-Environment
 * create virtual environment: `python -m venv .catbot`
 * activate environment: `source .catbot/bin/activate`
 * install dependencies: `pip install -r requirements.txt`
 
 Create database
 * add your api keys and other variables to .env
+
+### API
+____
+The API is built using FastAPI, therefore
+* to locally start: `uvicorn fastapi.main:app --reload`
