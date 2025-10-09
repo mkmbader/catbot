@@ -30,4 +30,4 @@ Create database
 ### API
 ____
 The API is built using FastAPI, therefore
-* to locally start: `uvicorn fastapi.main:app --reload`
+* to locally start: `uvicorn app:app --reload`
