@@ -1,12 +1,13 @@
 from fastapi import FastAPI, Depends, HTTPException, status
 from contextlib import asynccontextmanager
-from typing import List, AsyncGenerator
+from typing import AsyncGenerator
 from catbot.database.embedding import embedding_function
 from catbot.rag.basic_rag import BasicRAG
 from catbot.database.downloader import download_and_chunk_wikipedia_articles
 from catbot.database.embedding import create_data_base
 from chromadb import PersistentClient
-from fastapi.schemas import ChatRequest, ChatResponse
+from api.schemas import ChatRequest, ChatResponse
+from api.chat_wrapper import answer_question
 
 
 
@@ -86,11 +87,16 @@ async def chat_with_rag(
     """
     Send a natural language query to the RAG chatbot and get a generated answer.
     """
+    input_payload = ChatRequest.parse_obj(request_body)
+    print(f"Received chat request: {input_payload}")
     try:
-        answer = await rag.respond(request_body.query)
-        sources = await rag.get_sources(request_body.query)
+        # answer = await rag.respond(input_payload.query)
+        response_object = await answer_question(
+            input_payload=input_payload,
+            rag=rag
+        )
 
-        return ChatResponse(answer=answer, sources=sources)
+        return response_object
     except Exception as e:
         print(f"Error processing chat query: {e}")
         raise HTTPException(
