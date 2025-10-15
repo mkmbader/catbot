@@ -57,6 +57,7 @@ class BasicRAG:
             context_as_string = "\n\n".join(
                 [doc["document"] for doc in filtered_documents]
             )
+
             response = self.send_request(
                 prompt=self.prompt.format(context=context_as_string, query=query)
             )

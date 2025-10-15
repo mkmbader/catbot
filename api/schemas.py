@@ -13,4 +13,4 @@ class ChatResponse(BaseModel):
     Model for the outgoing chat response.
     """
     answer: str
-    sources: List[str] = []
+    sources: List[dict] = []

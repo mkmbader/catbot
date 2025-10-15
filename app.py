@@ -8,7 +8,13 @@ from catbot.database.embedding import create_data_base
 from chromadb import PersistentClient
 from api.schemas import ChatRequest, ChatResponse
 from api.chat_wrapper import answer_question
+import logging
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
@@ -17,15 +23,15 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     Context manager for the application lifespan.
     Initializes the RAG chatbot on startup and cleans it up on shutdown.
     """
-    print("FastAPI application starting up (lifespan manager)...")
+    logger.info("FastAPI application starting up (lifespan manager)...")
 
     articles = download_and_chunk_wikipedia_articles(['Cat'])
 
     try:
         create_data_base(articles)
-        print("Database created successfully.")
+        logger.info("Database created successfully.")
     except:
-        print("Database already exists, loaded existing database.")
+        logger.error("Database already exists, loaded existing database.")
 
     client = PersistentClient(path='catbot/database/chroma')
     collection = client.get_collection("its_all_about_cats", 
@@ -37,16 +43,16 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 
     
     app.state.rag = rag
-    print("RAG Chatbot instance created and stored in app.state.")
+    logger.info("RAG Chatbot instance created and stored in app.state.")
 
     yield 
 
-    print("FastAPI application shutting down (lifespan manager)...")
+    logger.info("FastAPI application shutting down (lifespan manager)...")
 
     if app.state.rag:
         await app.state.rag.close()
-    print("RAG Chatbot instance cleaned up.")
-    print("FastAPI application shut down gracefully.")
+    logger.info("RAG Chatbot instance cleaned up.")
+    logger.info("FastAPI application shut down gracefully.")
 
 
 app = FastAPI(
@@ -88,17 +94,16 @@ async def chat_with_rag(
     Send a natural language query to the RAG chatbot and get a generated answer.
     """
     input_payload = ChatRequest.parse_obj(request_body)
-    print(f"Received chat request: {input_payload}")
+    logger.info(f"Query: {input_payload}")
     try:
-        # answer = await rag.respond(input_payload.query)
         response_object = await answer_question(
             input_payload=input_payload,
             rag=rag
         )
-
+        logger.info('Response: ', response_object)
         return response_object
     except Exception as e:
-        print(f"Error processing chat query: {e}")
+        logger.error(f"Error processing chat query: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"An internal server error occurred while processing your query: {str(e)}"
